@@ -2,13 +2,13 @@ import {definePlugin} from 'sanity'
 import {OpenTableView} from './actions/OpenTableView'
 import {TableViewTool} from './tools/table/'
 
-type SanityJsonConfig = {
+type TableViewConfig = {
   excludedDocumentTypes?: {
     type: string
   }[]
 }
 
-const defaultConfig: SanityJsonConfig = {
+const defaultConfig: TableViewConfig = {
   excludedDocumentTypes: [],
 }
 
@@ -17,22 +17,22 @@ const defaultConfig: SanityJsonConfig = {
  *
  * ```ts
  * import {defineConfig} from 'sanity'
- * import {myPlugin} from 'sanity-plugin-sanity-json'
+ * import {tableView} from 'sanity-plugin-table-view'
  *
  * export default defineConfig({
  *   // ...
- *   plugins: [sanityJson({...config})],
+ *   plugins: [tableView({...config})],
  * })
  * ```
  */
-export const sanityJson = definePlugin<SanityJsonConfig | void>((_config) => {
-  const config: SanityJsonConfig = {
+export const tableView = definePlugin<TableViewConfig | void>((_config) => {
+  const config: TableViewConfig = {
     ...defaultConfig,
     ..._config,
   }
 
   return {
-    name: 'sanity-plugin-sanity-json',
+    name: 'sanity-plugin-table-view',
     document: {
       actions: (prev, context) => {
         if (config.excludedDocumentTypes?.find((e) => e.type === context.schemaType)) {

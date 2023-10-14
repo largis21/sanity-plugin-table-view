@@ -1,11 +1,11 @@
-# sanity-plugin-sanity-json
+# sanity-plugin-table-view
 
 > This is a **Sanity Studio v3** plugin.
 
 ## Installation
 
 ```sh
-npm install sanity-plugin-sanity-json
+npm install sanity-plugin-table-view
 ```
 
 ## Usage
@@ -14,7 +14,7 @@ Add it as a plugin in `sanity.config.ts` (or .js):
 
 ```ts
 import {defineConfig} from 'sanity'
-import {myPlugin} from 'sanity-plugin-sanity-json'
+import {myPlugin} from 'sanity-plugin-table-view
 
 export default defineConfig({
   //...

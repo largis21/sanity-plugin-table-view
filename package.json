@@ -1,18 +1,18 @@
 {
-  "name": "@larsivargiskegjerde/sanity-json",
+  "name": "sanity-plugin-table-view",
   "version": "1.0.0",
   "description": "",
   "keywords": [
     "sanity",
     "sanity-plugin"
   ],
-  "homepage": "https://github.com/largis21/sanity-json#readme",
+  "homepage": "https://github.com/largis21/sanity-plugin-table-view#readme",
   "bugs": {
-    "url": "https://github.com/largis21/sanity-json/issues"
+    "url": "https://github.com/largis21/sanity-plugin-table-view/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/largis21/sanity-json.git"
+    "url": "git+ssh://git@github.com/largis21/sanity-plugin-table-view.git"
   },
   "license": "MIT",
   "author": "Lars-Ivar Giskegjerde <ligiskegjerde@gmail.com>",
