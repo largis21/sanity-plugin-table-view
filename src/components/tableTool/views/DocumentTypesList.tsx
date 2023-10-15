@@ -1,11 +1,9 @@
-import {useContext, useEffect, useState} from 'react'
+import {useEffect, useState} from 'react'
 import {DocumentDefinition, useSchema} from 'sanity'
 import {getDocumentTypes} from '../../../lib/getDocumentTypes'
 import {createColumnHelper, flexRender, getCoreRowModel, useReactTable} from '@tanstack/react-table'
-import {ViewContext} from '../context/ViewContext'
-import {useToast} from '@sanity/ui'
-import {BreadcrumbsContext} from '../context/BreadcrumbsContext'
-import { View } from '../types'
+import {View} from '../types'
+import {useViewHandler} from '../hooks/useViewHandler'
 
 const columnHelper = createColumnHelper<DocumentDefinition>()
 const columns = [
@@ -19,7 +17,7 @@ const columns = [
 
 export const DocumentTypesList = () => {
   const schema = useSchema()
-  const toast = useToast()
+  const viewHandler = useViewHandler()
 
   const [documentTypes, setDocumentTypes] = useState<DocumentDefinition[]>([])
 
@@ -33,21 +31,7 @@ export const DocumentTypesList = () => {
     setDocumentTypes(getDocumentTypes(schema))
   }, [schema])
 
-  const [_, breadcrumbsHandler] = useContext(BreadcrumbsContext)
-  const [view, setView] = useContext(ViewContext)
-
   function handleDocumentTypeClicked(documentTypeName: string) {
-    if (!setView) {
-      console.error('setView is not defined')
-      toast.push({
-        title: 'Error changing view',
-        description: 'See console for errors',
-        status: 'error',
-      })
-
-      return
-    }
-
     const newView: View = {
       viewType: 'documentTypeEntries',
       options: {
@@ -55,12 +39,7 @@ export const DocumentTypesList = () => {
       },
     }
 
-    breadcrumbsHandler?.push({
-      title: documentTypeName,
-      view: newView,
-    })
-
-    setView(newView)
+    viewHandler.push(newView, documentTypeName)
   }
 
   return (
