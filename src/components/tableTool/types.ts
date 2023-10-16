@@ -12,6 +12,13 @@ export type DocumentTypeEntriesView = {
   }
 } & ViewBase
 
-export type View = DocumentTypesListView | DocumentTypeEntriesView
+export type JsonView = {
+  viewType: 'jsonView'
+  options: {
+    data: {[key: string]: any} | {[key: string]: any}[]
+  }
+}
+
+export type View = DocumentTypesListView | DocumentTypeEntriesView | JsonView
 
 export type Breadcrumb = {view: View; title: string; index: number}

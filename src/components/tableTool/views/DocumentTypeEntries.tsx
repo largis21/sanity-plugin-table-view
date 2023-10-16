@@ -1,9 +1,10 @@
 import {ReactNode, useEffect, useState} from 'react'
 import {useClient} from 'sanity'
 import {useToast} from '@sanity/ui'
-import {DocumentTypeEntriesView} from '../types'
+import {DocumentTypeEntriesView, JsonView} from '../types'
 import {ColumnDef, flexRender, getCoreRowModel, useReactTable} from '@tanstack/react-table'
 import {CellBodyComponent} from '../../reactTable/Cell'
+import {useViewHandler} from '../hooks/useViewHandler'
 
 type DocumentTypeEntriesProps = {
   view: DocumentTypeEntriesView
@@ -12,13 +13,26 @@ type DocumentTypeEntriesProps = {
 export const DocumentTypeEntries = ({view}: DocumentTypeEntriesProps) => {
   const client = useClient()
   const toast = useToast()
+  const viewHandler = useViewHandler()
 
   const [entries, setEntries] = useState<unknown[]>([])
   const [entriesLoaded, setEntriesLoaded] = useState(false)
   const [columns, setColumns] = useState<ColumnDef<unknown, any>[]>([])
 
+  function handleObjectClick(data: JsonView['options']['data'], title: string) {
+    viewHandler.push(
+      {
+        viewType: 'jsonView',
+        options: {
+          data,
+        },
+      },
+      title,
+    )
+  }
+
   useEffect(() => {
-    setColumns(getColumnsFromEntries(entries))
+    setColumns(getColumnsFromEntries(entries, handleObjectClick))
     setEntriesLoaded(true)
   }, [entries, toast, view])
 
@@ -82,7 +96,10 @@ export const DocumentTypeEntries = ({view}: DocumentTypeEntriesProps) => {
   )
 }
 
-function getColumnsFromEntries(entries: unknown[]): ColumnDef<unknown, any>[] {
+function getColumnsFromEntries(
+  entries: unknown[],
+  handleObjectClick: (data: JsonView['options']['data'], title: string) => void,
+): ColumnDef<unknown, any>[] {
   const fields: string[] = []
 
   entries.forEach((entry) => {
@@ -107,9 +124,30 @@ function getColumnsFromEntries(entries: unknown[]): ColumnDef<unknown, any>[] {
           return <CellBodyComponent>{cell.getValue() as ReactNode}</CellBodyComponent>
         case 'object':
           if (Array.isArray(cellValue)) {
-            return <CellBodyComponent>[Array]</CellBodyComponent>
+            return (
+              <CellBodyComponent
+                onClick={() => handleObjectClick(cellValue as JsonView['options']['data'], cell.column.id)}
+                /* safe cast??? */
+              >
+                [Array]
+              </CellBodyComponent>
+            )
           }
-          return <CellBodyComponent>[Object]</CellBodyComponent>
+
+          if (cellValue.hasOwnProperty('_type') && cellValue.hasOwnProperty('_ref')) {
+            if (cellValue._type === 'reference') {
+              return <CellBodyComponent>[Reference]</CellBodyComponent>
+            }
+          }
+
+          return (
+            <CellBodyComponent
+              onClick={() => handleObjectClick(cellValue as JsonView['options']['data'])}
+              /* safe cast??? */
+            >
+              [Object]
+            </CellBodyComponent>
+          )
         default:
           return <CellBodyComponent> </CellBodyComponent>
       }
