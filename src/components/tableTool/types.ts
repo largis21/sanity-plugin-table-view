@@ -15,7 +15,7 @@ export type DocumentTypeEntriesView = {
 export type JsonView = {
   viewType: 'jsonView'
   options: {
-    data: {[key: string]: any} | {[key: string]: any}[]
+    data: unknown
   }
 }
 

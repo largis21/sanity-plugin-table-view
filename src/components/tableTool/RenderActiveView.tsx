@@ -2,7 +2,7 @@ import {ReactNode} from 'react'
 import {useViewHandler} from './hooks/useViewHandler'
 import {DocumentTypesList} from './views/DocumentTypesList'
 import {DocumentTypeEntries} from './views/DocumentTypeEntries'
-import { JsonView } from './views/JsonView'
+import {JsonView} from './views/JsonView'
 
 export const RenderActiveView = (): ReactNode => {
   const viewHandler = useViewHandler()
@@ -14,7 +14,7 @@ export const RenderActiveView = (): ReactNode => {
     case 'documentTypeEntries':
       return <DocumentTypeEntries view={currentView} />
     case 'jsonView':
-      return <JsonView />
+      return <JsonView view={currentView} />
     default:
       return <></>
   }
