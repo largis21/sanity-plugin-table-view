@@ -4,6 +4,7 @@ export const Table = ({columns, data}: {columns: ColumnDef<unknown, any>[]; data
   if (typeof data !== 'object') throw new Error('Data must be json')
 
   let tableData: any[]
+
   if (Array.isArray(data)) {
     tableData = data
   } else {

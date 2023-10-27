@@ -28,6 +28,8 @@ export function getColumns(
     })
   }
 
+  fields.sort()
+
   return fields.map((field) => ({
     accessorKey: field,
     header: (cell) => {
